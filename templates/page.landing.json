@@ -1,0 +1,17 @@
+{
+    "layout": "theme.landing",
+    "sections": {
+        "banner": {
+            "type": "landing-banner",
+            "settings": {}
+        },
+        "product-look": {
+            "type": "landing-products",
+            "settings": {}
+        }
+    },
+    "order": [
+        "banner",
+        "product-look"
+    ]
+}
