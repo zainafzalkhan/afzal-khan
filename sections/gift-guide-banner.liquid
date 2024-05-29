@@ -1,6 +1,147 @@
+<section id="gift-guide-banner">
+  <style>
+    #gift-guide-banner {
+      background: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    #gift-guide-banner .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #gift-guide-banner .banner-content {
+      flex: 1;
+    }
+
+    #gift-guide-banner .banner-image {
+      flex: 1;
+    }
+
+    #gift-guide-banner .banner-image img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    #gift-guide-banner .btn-choose-gift,
+    #gift-guide-banner .btn-shop-now {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 10px;
+      background: yellow;
+      color: black;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #gift-guide-banner .btn-choose-gift:hover,
+    #gift-guide-banner .btn-shop-now:hover {
+      background: orange;
+    }
+
+    #gift-guide-banner .banner-footer {
+      margin-top: 20px;
+    }
+
+    #gift-guide-banner .footer-note {
+      margin-top: 20px;
+      font-size: 0.8em;
+      color: gray;
+    }
+  </style>
+
+  <div class="container">
+    <div class="banner-content">
+      <h1>{{ section.settings.tisso_vision }}</h1>
+      <p>{{ section.settings.banner_subtitle }}</p>
+      <a href="#" class="btn-choose-gift">{{ section.settings.choose_gift }}</a>
+    </div>
+    <div class="banner-image">
+      <img src="{{ 'gift-guide-image.jpg' | asset_url }}" alt="Gift Guide">
+    </div>
+  </div>
+  <div class="banner-footer">
+    <h2>{{ section.settings.gift_guide_title }}</h2>
+    <p>{{ section.settings.gift_guide_description }}</p>
+    <a href="#" class="btn-shop-now">{{ section.settings.shop_now }}</a>
+  </div>
+  <div class="footer-note">
+    <p>{{ section.settings.footer_note }}</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var chooseGiftButton = document.querySelector('.btn-choose-gift');
+      var shopNowButton = document.querySelector('.btn-shop-now');
+
+      chooseGiftButton.addEventListener('mouseover', function () {
+        this.style.backgroundColor = 'orange';
+      });
+
+      chooseGiftButton.addEventListener('mouseout', function () {
+        this.style.backgroundColor = 'yellow';
+      });
+
+      shopNowButton.addEventListener('mouseover', function () {
+        this.style.backgroundColor = 'orange';
+      });
+
+      shopNowButton.addEventListener('mouseout', function () {
+        this.style.backgroundColor = 'yellow';
+      });
+    });
+  </script>
+</section>
+
 {% schema %}
-  {
-    "name": "Section name",
-    "settings": []
-  }
+{
+  "name": "Gift Guide Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tisso_vision",
+      "label": "Tisso Vison",
+      "default": "Tisso Vison"
+    },
+    {
+      "type": "text",
+      "id": "banner_subtitle",
+      "label": "Banner Subtitle",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "choose_gift",
+      "label": "Choose Gift Button Text",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "text",
+      "id": "gift_guide_title",
+      "label": "Gift Guide Title",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "gift_guide_description",
+      "label": "Gift Guide Description",
+      "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+    },
+    {
+      "type": "text",
+      "id": "shop_now",
+      "label": "Shop Now Button Text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "text",
+      "id": "footer_note",
+      "label": "Footer Note",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    }
+  ]
+}
 {% endschema %}
