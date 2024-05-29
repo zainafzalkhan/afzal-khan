@@ -60,7 +60,172 @@
       max-width: 45%;
     }
   }
+
+  /* POPUP CSS */
+  .popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 315px;
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: -4px;
+    right: 10px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .popup-header {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .popup-header .image-parent {
+    width: 120px;
+    min-width: 120px;
+    height: auto;
+  }
+
+  .popup-header .image-parent img {
+    width: 120px;
+    height: 140px;
+    /* border-radius: 8px; */
+    object-fit: cover;
+  }
+
+  .popup-header .popup-header {
+    flex-grow: 1;
+  }
+
+  .popup-header .popup-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+  }
+
+  .popup-header .popup-header .popup-price {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .popup-header .popup-header .popup-description {
+    font-size: 14px;
+    margin: 10px 0 0 0;
+  }
+
+  .color-options {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+
+  .color-options input[type='radio'] {
+    display: none;
+  }
+
+  .color-options label {
+    flex: 1;
+    text-align: center;
+    padding: 10px 20px;
+    border: 1px solid #000;
+    border-left-width: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    margin: 0 5px;
+  }
+
+  .color-options input[type='radio']:checked + label {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .color-options input[type='radio']#blue:checked + label {
+    border-color: blue;
+  }
+
+  .color-options input[type='radio']#black:checked + label {
+    border-color: black;
+  }
+
+  form label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+
+  form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    appearance: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background: none;
+    position: relative;
+  }
+
+  form select::-ms-expand {
+    display: none; /* Remove default arrow in IE */
+  }
+
+  form select::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #000;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  form select:focus::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .add-to-cart {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    position: relative;
+  }
+
+  .add-to-cart::after {
+    content: '→';
+    position: absolute;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 40px;
+  }
 {% endstylesheet %}
+<div class="popup"></div>
 <h1>{{ section.settings['grid-title'] }}</h1>
 
 <div class="image-grid">
@@ -76,11 +241,11 @@
           {% endif %}
 
           <button
+            onclick="showDetails('{{ product.handle }}')"
             style="
               --LOOK-X-POS:{{ block.settings.position_x }}%;
               --LOOK-Y-POS:{{ block.settings.position_y }}%;
             "
-
             class="overlay-button"
           >
             +
@@ -89,6 +254,38 @@
     {% endcase %}
   {% endfor %}
 </div>
+
+<script>
+  async function showDetails(handle) {
+    // reqeust section of product details
+    let htmlString = await fetch(`${Shopify.routes.root}products/${handle}?section_id=api-product-details`);
+    let htmlText = await htmlString.text();
+    document.querySelector('.popup').innerHTML = htmlText;
+    document.querySelectorAll('.variants-btn,.variant-select').forEach((selectedVariant) => {
+      selectedVariant.addEventListener('change', (e) => {
+        e.preventDefault();
+        let currentOptions = Array.from(document.querySelectorAll('.variants-btn:checked,.variant-select')).map(
+          (e) => e.value
+        );
+        let selectedVariant = JSON.parse(
+          document.querySelector("#popup-json[type='application/json']").textContent
+        ).find((variant) => {
+          let check = !variant.options
+            .map((op1, index) => {
+              return currentOptions[index] == op1;
+            })
+            .includes(false);
+          return check;
+        });
+
+        document.querySelector('form input[name="id"]').value = selectedVariant.id;
+      });
+    });
+  }
+  function popupClose() {
+    document.querySelector('.popup').innerHTML = '';
+  }
+</script>
 
 {% schema %}
 {
