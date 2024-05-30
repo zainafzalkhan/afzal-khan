@@ -20,12 +20,29 @@
     color: #333 !important;
   }
   .header .header-link {
+    position: relative;
     text-decoration: none;
     background: yellow;
     color: #333;
     height: 44px;
     width: 207px;
     padding: 10px;
+    background-position: right;
+    background-size: 200%;
+    background-image: linear-gradient(to left, yellow 50%, #333 50%);
+    transition: all 0.3s;
+  }
+  .header .header-link:hover {
+    background-position: left;
+    color: #fff;
+  }
+  .header .header-link::after {
+    content: '→';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 40px;
   }
   .hero {
     height: 780px;
@@ -35,6 +52,7 @@
     color: #333;
     text-align: center;
     overflow: hidden;
+    margin: 10px 87px;
   }
 
   .overlay {
@@ -53,7 +71,6 @@
     left: 0px;
     bottom: 0px;
     background: #fff;
-    padding: 20px;
     width: 500px;
     color: #333;
     display: flex;
@@ -74,9 +91,27 @@
     text-align: left;
   }
   .hero-content .btn {
-    background: black;
-    color: white;
-    padding: 10px 20px;
+    position: relative;
+    cursor: pointer;
+    background: #333;
+    color: #fff;
+    font-size: 18px;
+    padding: 15px 70px;
+    background-position: right;
+    background-size: 200%;
+    background-image: linear-gradient(to left, #333 50%, yellow 50%);
+    transition: all 0.3s;
+  }
+  .hero-content .btn:hover {
+    background-position: left;
+    color: #333;
+  }
+  .hero-content .btn::after {
+    content: '→';
+    position: absolute;
+    right: 12px;
+    transform: translateY(-50%);
+    font-size: 55px;
   }
   .banner-footer {
     background-color: #f5f5f5;
@@ -86,12 +121,87 @@
     align-items: center;
     justify-content: center;
   }
+
+  {% comment %} HEADER CSS {% endcomment %}
+
+  .hamburger {
+    display:none;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 24px;
+    height: 24px;
+  }
+  .hamburger div {
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+  }
+  @media (max-width: 768px) {
+    .header-msg, .header-link {
+      display: none;
+    }
+    .hamburger{
+      display:flex;
+    }
+    .header-title {
+      text-align: left;
+      flex-grow: 0;
+    }
+    .hm{
+      display:block !important;
+    }
+    .footer-msg{
+      text-align:center;
+    }
+    .overlay{
+      top:15%;
+    }
+    .hero {
+      height: 400px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: #333;
+      text-align: center;
+      overflow: hidden;
+      margin: 10px 10px;
+    }
+    .hero-content {
+      position: absolute;
+      z-index: 1;
+      top:2px;
+      bottom:40%;
+      /* color: #fff; */
+      background: #fff;
+      width: 100%;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;}
+      .hero-content .msg {
+        font-size: 15px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+    .hero-content .title {
+      font-size: 35px;
+
+    }
+  }
 </style>
 
 <div class="header">
-  <h2 class="header-title">{{ section.settings['header-title'] }}</h2>
-  <p class="header-msg">{{ section.settings['header-msg'] }}</p>
-  <a class="header-link" href="#"> {{ section.settings['header-button-text'] }} </a>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div class="hm"></div>
+    <div class="hm"></div>
+    <div class="hm"></div>
+  </div>
+  <div class="menus">
+    <h2 class="header-title">{{ section.settings['header-title'] }}</h2>
+    <p class="header-msg">{{ section.settings['header-msg'] }}</p>
+    <a class="header-link" href="#"> {{ section.settings['header-button-text'] }} </a>
+  </div>
 </div>
 
 <div class="hero">
@@ -109,6 +219,15 @@
 <div class="banner-footer">
   <p class="footer-msg">{{ section.settings['banner-footer'] }}</p>
 </div>
+
+<script>
+  function toggleMenu() {
+    const msg = document.querySelector('.header-msg');
+    const link = document.querySelector('.header-link');
+    msg.style.display = msg.style.display === 'none' || msg.style.display === '' ? 'block' : 'none';
+    link.style.display = link.style.display === 'none' || link.style.display === '' ? 'block' : 'none';
+  }
+</script>
 
 {% schema %}
 {

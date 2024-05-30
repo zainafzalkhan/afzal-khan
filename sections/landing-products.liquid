@@ -44,9 +44,9 @@
     border: none;
     border-radius: 50%;
     padding: -1px;
-    font-size: 24px;
+    font-size: 18px;
+    width: 20px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
   }
   .look-heading {
     text-align: left;
@@ -54,12 +54,7 @@
     background-color: #fff;
     color: #333;
   }
-  @media (max-width: 768px) {
-    .image-item {
-      flex: 1 0 45%; /* 2 images in a row on mobile */
-      max-width: 45%;
-    }
-  }
+
 
   /* POPUP CSS */
   .popup {
@@ -224,9 +219,23 @@
     transform: translateY(-50%);
     font-size: 40px;
   }
+  .look-heading{
+    margin:10px 90px:
+  }
+  @media (max-width: 768px) {
+    .image-item {
+      flex: 1 0 45%; /* 2 images in a row on mobile */
+      max-width: 45%;
+      margin:2px;
+    }
+    .look-heading{
+
+      text-align:center;
+    }
+  }
 {% endstylesheet %}
 <div class="popup"></div>
-<h1>{{ section.settings['grid-title'] }}</h1>
+<h1 class="look-heading">{{ section.settings['grid-title'] }}</h1>
 
 <div class="image-grid">
   {% for block in section.blocks %}
@@ -258,6 +267,7 @@
 <script>
   async function showDetails(handle) {
     // reqeust section of product details
+    document.querySelector('.popup').innerHTML = '<h1 style="color:#fff">Loading...</h1>';
     let htmlString = await fetch(`${Shopify.routes.root}products/${handle}?section_id=api-product-details`);
     let htmlText = await htmlString.text();
     document.querySelector('.popup').innerHTML = htmlText;
