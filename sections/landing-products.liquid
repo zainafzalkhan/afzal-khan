@@ -1,0 +1,362 @@
+{% stylesheet %}
+  .image-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+  }
+
+  .image-item {
+    position: relative;
+    margin: 10px;
+    flex: 1 0 30%; /* 3 images in a row on desktop */
+    max-width: 30%;
+  }
+
+  .image-item img {
+    width: 100%;
+
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+
+  .overlay-button {
+    position: absolute;
+    top: var(--LOOK-Y-POS);
+    left: var(--LOOK-X-POS);
+    background-color: #fff;
+    color: #000;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 50%;
+    padding: -1px;
+    font-size: 18px;
+    width: 20px;
+    cursor: pointer;
+  }
+  .look-heading {
+    text-align: left;
+    padding: 10px 80px;
+    background-color: #fff;
+    color: #333;
+  }
+
+
+  /* POPUP CSS */
+  .popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 315px;
+    position: relative;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: -4px;
+    right: 10px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .popup-header {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .popup-header .image-parent {
+    width: 120px;
+    min-width: 120px;
+    height: auto;
+  }
+
+  .popup-header .image-parent img {
+    width: 120px;
+    height: 140px;
+    /* border-radius: 8px; */
+    object-fit: cover;
+  }
+
+  .popup-header .popup-header {
+    flex-grow: 1;
+  }
+
+  .popup-header .popup-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+  }
+
+  .popup-header .popup-header .popup-price {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .popup-header .popup-header .popup-description {
+    font-size: 14px;
+    margin: 10px 0 0 0;
+  }
+
+  .color-options {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+
+  .color-options input[type='radio'] {
+    display: none;
+  }
+
+  .color-options label {
+    flex: 1;
+    text-align: center;
+    padding: 10px 20px;
+    border: 1px solid #000;
+    border-left-width: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    margin: 0 5px;
+  }
+
+  .color-options input[type='radio']:checked + label {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .color-options input[type='radio']#blue:checked + label {
+    border-color: blue;
+  }
+
+  .color-options input[type='radio']#black:checked + label {
+    border-color: black;
+  }
+
+  form label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+
+  form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    appearance: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background: none;
+    position: relative;
+  }
+
+  form select::-ms-expand {
+    display: none; /* Remove default arrow in IE */
+  }
+
+  form select::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #000;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  form select:focus::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .add-to-cart {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    position: relative;
+  }
+
+  .add-to-cart::after {
+    content: '→';
+    position: absolute;
+    right: 15px;
+    transform: translateY(-50%);
+    font-size: 40px;
+  }
+  .look-heading{
+    margin:10px 90px:
+  }
+  @media (max-width: 768px) {
+    .image-item {
+      flex: 1 0 45%; /* 2 images in a row on mobile */
+      max-width: 45%;
+      margin:2px;
+    }
+    .look-heading{
+      text-align:center;
+    }
+  }
+{% endstylesheet %}
+<div class="popup"></div>
+<h1 class="look-heading">{{ section.settings['grid-title'] }}</h1>
+
+<div class="image-grid">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'product' %}
+        {% assign product = block.settings.product %}
+        <div class="image-item">
+          {% if product.featured_media %}
+            <img src="{{ product.featured_media | image_url: width:500 }}" alt="Image 1">
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag }}
+          {% endif %}
+
+          <button
+            onclick='showDetails("{{ product.handle }}", {{ product.first_available_variant.options |json }});'
+            style="
+              --LOOK-X-POS:{{ block.settings.position_x }}%;
+              --LOOK-Y-POS:{{ block.settings.position_y }}%;
+            "
+            class="overlay-button"
+          >
+            +
+          </button>
+        </div>
+    {% endcase %}
+  {% endfor %}
+</div>
+
+<script>
+  async function showDetails(handle, variantOptions) {
+    // reqeust section of product details
+    document.querySelector('.popup').innerHTML = '<h1 style="color:#fff">Loading...</h1>';
+    let htmlString = await fetch(`${Shopify.routes.root}products/${handle}?section_id=api-product-details`);
+    let htmlText = await htmlString.text();
+    document.querySelector('.popup').innerHTML = htmlText;
+    let currentVariant = Array.from(document.querySelectorAll('.variants-btn:checked,.variant-select')).map(
+      (e) => e.value
+    );
+    document.querySelectorAll('.variants-btn,.variant-select').forEach((selectedVariant) => {
+      selectedVariant.addEventListener('change', (e) => {
+        e.preventDefault();
+        let currentOptions = Array.from(document.querySelectorAll('.variants-btn:checked,.variant-select')).map(
+          (e) => e.value
+        );
+        let selectedVariant = JSON.parse(
+          document.querySelector("#popup-json[type='application/json']").textContent
+        ).find((variant) => {
+          let check = !variant.options
+            .map((op1, index) => {
+              return currentOptions[index] == op1;
+            })
+            .includes(false);
+          return check;
+        });
+        variantOptions = selectedVariant.options;
+        document.querySelector('form input[name="id"]').value = selectedVariant.id;
+      });
+    });
+    document.querySelector(".popup-content button[type='submit']").addEventListener('click', async (e) => {
+      e.preventDefault();
+      // if selected variant is M/Black then Soft winter jacket added first
+      if (variantOptions.join('/') == 'M/Black') {
+        let res = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                quantity: 1,
+                id: 45165374079191,
+              },
+            ],
+          }),
+        });
+        document.querySelector('.popup-content form').submit();
+      } else {
+        document.querySelector('.popup-content form').submit();
+      }
+    });
+  }
+  function popupClose() {
+    document.querySelector('.popup').innerHTML = '';
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Products Look Grid",
+  "tag": "section",
+  "class": "section",
+
+  "settings": [
+    {
+      "type": "text",
+      "id": "grid-title",
+      "label": "Set Grid Heading",
+      "default": "Tisso Vison In The Wild"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Choose a product"
+        },
+        {
+          "type": "range",
+          "id": "position_x",
+          "label": "Set popup button x position",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "position_y",
+          "label": "Set popup button Y position",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "unit": "%",
+          "default": 50
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

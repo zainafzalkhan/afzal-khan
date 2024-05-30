@@ -1,0 +1,62 @@
+<div class="popup-content">
+  {% assign first_variant = product.first_available_variant %}
+  <span onclick="popupClose();" class="close-btn">&times;</span>
+  <div class="popup-header">
+    <div class="image-parent">
+      <img
+        src="{{ product.featured_media | image_url:width:500 }}"
+        alt="{{ product.featured_media.alt }}"
+      >
+    </div>
+    <div class="popup-details">
+      <span>{{ product.title }}</span>
+      <span class="popup-price">{{ first_variant.price | money_with_currency }}</span>
+      <p class="popup-description">{{ product.description | truncate: 40 }}</p>
+    </div>
+  </div>
+  {% form 'product', product %}
+    <input type="hidden" name="id" value="{{ first_variant.id }}">
+    {% for option in product.options_with_values %}
+      {% if option.name == 'Color' %}
+        <label for="color">{{ option.name }}</label>
+        <div class="color-options">
+          {% for value in option.values %}
+            <input
+              class="variants-btn"
+              type="radio"
+              id="{{ value }}"
+              name="{{option.name}}"
+              value="{{value}}"
+              {% if forloop.index == 1 %}
+                checked="checked"
+              {% endif %}
+            >
+            <label for="{{ value }}">{{ value }}</label>
+          {% endfor %}
+        </div>
+      {% else %}
+        <label for="{{option.name}}">{{ option.name }}</label>
+        <div class="select-wrapper">
+          <select class="variant-select" id="{{option.name}}" name="{{option.name}}">
+            <option value="" disabled>Choose your size</option>
+            {% for value in option.values %}
+              <option
+                value="{{ value }}"
+                {% if forloop.index == 1 %}
+                  selected
+                {% endif %}
+              >
+                {{ value }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <button type="submit" class="add-to-cart">ADD TO CART</button>
+  {% endform %}
+  <script id="popup-json" type="application/json">
+    {{ product.variants |json }}
+  </script>
+</div>

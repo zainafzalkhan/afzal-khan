@@ -1,0 +1,85 @@
+{
+  "layout": "theme.landing",
+  "sections": {
+    "banner": {
+      "type": "landing-banner",
+      "settings": {
+        "header-title": "Afzal Test Shop",
+        "header-msg": "Find the ideal gift for your loved ones",
+        "header-button-text": "CHOOSE GIFT",
+        "overlay-heading": "The Gift Guide",
+        "overlay-msg": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
+        "overlay-button": "SHOP NOW",
+        "banner-footer": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+      }
+    },
+    "product-look": {
+      "type": "landing-products",
+      "blocks": {
+        "product_kzY94A": {
+          "type": "product",
+          "settings": {
+            "product": "black-leather-bag",
+            "position_x": 50,
+            "position_y": 33
+          }
+        },
+        "product_AHDXkK": {
+          "type": "product",
+          "settings": {
+            "product": "blue-silk-tuxedo",
+            "position_x": 76,
+            "position_y": 60
+          }
+        },
+        "product_UVLJkq": {
+          "type": "product",
+          "settings": {
+            "product": "chequered-red-shirt",
+            "position_x": 50,
+            "position_y": 50
+          }
+        },
+        "product_Cz8L9J": {
+          "type": "product",
+          "settings": {
+            "product": "classic-leather-jacket",
+            "position_x": 50,
+            "position_y": 50
+          }
+        },
+        "product_Lr6Yb4": {
+          "type": "product",
+          "settings": {
+            "product": "classic-varsity-top",
+            "position_x": 50,
+            "position_y": 50
+          }
+        },
+        "product_XLXXiz": {
+          "type": "product",
+          "settings": {
+            "product": "dark-denim-top",
+            "position_x": 50,
+            "position_y": 50
+          }
+        }
+      },
+      "block_order": [
+        "product_kzY94A",
+        "product_AHDXkK",
+        "product_UVLJkq",
+        "product_Cz8L9J",
+        "product_Lr6Yb4",
+        "product_XLXXiz"
+      ],
+      "settings": {
+        "grid-title": "Tisso Vison In The Wild"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-look"
+  ]
+}
